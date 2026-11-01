@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->string('application_id', 20)->unique();
+            $table->char('access_token_hash', 64);
             $table->string('full_name', 100);
             $table->string('nik', 16);
             $table->date('dob');

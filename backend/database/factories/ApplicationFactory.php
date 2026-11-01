@@ -10,6 +10,7 @@ class ApplicationFactory extends Factory
     {
         return [
             'application_id' => fake()->unique()->numerify('APP-20261101-####'),
+            'access_token_hash' => hash('sha256', 'test-token'),
             'full_name' => 'Budi Santoso',
             'nik' => '3171011504900001',
             'dob' => '1990-04-15',
