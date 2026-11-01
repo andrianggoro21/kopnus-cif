@@ -1,0 +1,206 @@
+[
+    {
+        "no": 1,
+        "input": {
+            "full_name": "Budi Santoso",
+            "nik": "3171011504900001",
+            "dob": "1990-04-15",
+            "phone": "081234567890",
+            "marital_status": "KAWIN",
+            "spouse_name": "Siti Aminah",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000001",
+            "confidence": 100,
+            "score": 85,
+            "decision": "PASS",
+            "reason": null
+        }
+    },
+    {
+        "no": 2,
+        "input": {
+            "full_name": "Dewi Lestari",
+            "nik": "3578016107950004",
+            "dob": "1995-07-21",
+            "phone": "+62 878-5555-4444",
+            "marital_status": "KAWIN",
+            "spouse_name": "Rahmat Hidayat",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000004",
+            "confidence": 100,
+            "score": 90,
+            "decision": "PASS",
+            "reason": null
+        }
+    },
+    {
+        "no": 3,
+        "input": {
+            "full_name": "Fajar Nugraha",
+            "nik": "3173051403870300",
+            "dob": "1987-03-14",
+            "marital_status": "KAWIN",
+            "spouse_name": "Wulan Rahayu",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000019",
+            "confidence": 100,
+            "score": 86,
+            "decision": "PASS",
+            "reason": null
+        }
+    },
+    {
+        "no": 4,
+        "input": {
+            "full_name": "Fajar Nugroho",
+            "nik": "3173051403870300",
+            "dob": "1987-03-14",
+            "phone": "081200000000",
+            "marital_status": "KAWIN",
+            "spouse_name": "Wulan Rahayu",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000019",
+            "confidence": 85,
+            "score": 86,
+            "decision": "REFER",
+            "reason": null
+        }
+    },
+    {
+        "no": 5,
+        "input": {
+            "full_name": "Andi Pratama",
+            "nik": "3273022002880003",
+            "dob": "1988-02-20",
+            "phone": "0857-1111-2222",
+            "marital_status": "BELUM_KAWIN",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000003",
+            "confidence": 100,
+            "score": 79.5,
+            "decision": "REFER",
+            "reason": null
+        }
+    },
+    {
+        "no": 6,
+        "input": {
+            "full_name": "Budi Santoso",
+            "nik": "3273010311848280",
+            "dob": "1984-11-03",
+            "phone": "081399887766",
+            "marital_status": "KAWIN",
+            "spouse_name": "Ratna Sari",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000009",
+            "confidence": 100,
+            "score": 45,
+            "decision": "NOT_PASS",
+            "reason": "LOW_SCORE"
+        }
+    },
+    {
+        "no": 7,
+        "input": {
+            "full_name": "Joko Prasetyo",
+            "nik": "3171011504900001",
+            "dob": "1991-01-01",
+            "marital_status": "BELUM_KAWIN",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000001",
+            "confidence": 64.46,
+            "score": 85,
+            "decision": "NOT_PASS",
+            "reason": "LOW_CONFIDENCE"
+        }
+    },
+    {
+        "no": 8,
+        "input": {
+            "full_name": "Wulan Rahayu",
+            "nik": "3173057007890301",
+            "dob": "1989-07-30",
+            "phone": "085799001123",
+            "marital_status": "KAWIN",
+            "spouse_name": "Fajar Nugroho",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000020",
+            "confidence": 100,
+            "score": 80,
+            "decision": "PASS",
+            "reason": null
+        }
+    },
+    {
+        "no": 9,
+        "input": {
+            "full_name": "Indah Permata",
+            "nik": "3578015901900107",
+            "dob": "1990-01-19",
+            "phone": "081355667789",
+            "marital_status": "CERAI",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": "8100000025",
+            "confidence": 100,
+            "score": 49.5,
+            "decision": "NOT_PASS",
+            "reason": "LOW_SCORE"
+        }
+    },
+    {
+        "no": 10,
+        "input": {
+            "full_name": "Rudi Hartono",
+            "nik": "3174052208910005",
+            "dob": "1991-08-22",
+            "phone": "081277778888",
+            "marital_status": "BELUM_KAWIN",
+            "loan_type": "KTA",
+            "loan_amount": 50000000,
+            "loan_tenor_months": 12
+        },
+        "expected": {
+            "no_cif": null,
+            "confidence": null,
+            "score": null,
+            "decision": "NOT_PASS",
+            "reason": "CIF_NOT_FOUND"
+        }
+    }
+]
