@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\UpstreamUnavailable;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,5 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(fn (UpstreamUnavailable $e) => response()->json([
+            'message' => 'Layanan data nasabah sedang tidak dapat dihubungi. Silakan coba beberapa saat lagi.',
+        ], 503));
     })->create();
