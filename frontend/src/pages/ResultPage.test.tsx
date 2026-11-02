@@ -59,6 +59,13 @@ it('loads the application with the stored token and shows numbers with two decim
   expect(fetchMock.mock.calls[0][1].headers['X-Application-Token']).toBe('secret')
 })
 
+it('moves focus to the result heading so screen readers announce it', async () => {
+  respond(200, { data: application({}) })
+  renderPage()
+
+  expect(await screen.findByRole('heading', { name: 'Hasil pengecekan' })).toHaveFocus()
+})
+
 it('hides numbers and uploads for NOT PASS and offers a new application', async () => {
   respond(200, { data: application({ decision: 'NOT_PASS', identity_confidence: null, credit_score: null }) })
   renderPage()
