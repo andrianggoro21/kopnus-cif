@@ -10,12 +10,14 @@ class ApplicationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $hideNumbers = $this->decision === Decision::NotPass;
+
         return [
             'application_id' => $this->application_id,
             'access_token' => $this->whenHas('access_token'),
             'decision' => $this->decision->value,
-            'identity_confidence' => $this->identity_confidence,
-            'credit_score' => $this->credit_score,
+            'identity_confidence' => $hideNumbers ? null : $this->identity_confidence,
+            'credit_score' => $hideNumbers ? null : $this->credit_score,
             'status' => $this->status,
             'documents_required' => $this->decision === Decision::Refer,
             'loan' => [

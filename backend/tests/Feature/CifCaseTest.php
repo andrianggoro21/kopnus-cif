@@ -37,16 +37,24 @@ class CifCaseTest extends TestCase
 
         $response->assertCreated()->assertJsonPath('data.decision', $expected['decision']);
         $data = $response->json('data');
-        if ($expected['confidence'] === null) {
-            $this->assertNull($data['identity_confidence']);
-        } else {
-            $this->assertEqualsWithDelta($expected['confidence'], $data['identity_confidence'], 0.01);
-        }
-        $this->assertEquals($expected['score'], $data['credit_score']);
-
         $application = Application::where('application_id', $data['application_id'])->sole();
+
+        if ($expected['confidence'] === null) {
+            $this->assertNull($application->identity_confidence);
+        } else {
+            $this->assertEqualsWithDelta($expected['confidence'], $application->identity_confidence, 0.01);
+        }
+        $this->assertEquals($expected['score'], $application->credit_score);
         $this->assertSame($expected['no_cif'], $application->matched_no_cif);
         $this->assertSame($expected['reason'], $application->reason?->value);
+
+        if ($expected['decision'] === 'NOT_PASS') {
+            $this->assertNull($data['identity_confidence']);
+            $this->assertNull($data['credit_score']);
+        } else {
+            $this->assertEquals($application->identity_confidence, $data['identity_confidence']);
+            $this->assertEquals($application->credit_score, $data['credit_score']);
+        }
 
         if ($expected['no_cif'] === null) {
             Http::assertNotSent(fn (Request $r) => $r->url() === config('services.scoring.url'));
