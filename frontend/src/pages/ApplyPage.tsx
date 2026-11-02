@@ -101,7 +101,7 @@ function FormField({
 
 function SectionLegend({ number, children }: { number: number; children: ReactNode }) {
   return (
-    <FieldLegend className="mb-1 flex items-center gap-3 text-lg font-semibold">
+    <FieldLegend className="mb-5 flex items-center gap-3 text-lg font-semibold">
       <span className="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-sm text-primary-foreground">
         {number}
       </span>
@@ -273,7 +273,7 @@ export default function ApplyPage() {
             </div>
           </FieldSet>
 
-          <FieldSet className="grid gap-x-6 gap-y-5 border-t pt-8 md:grid-cols-2 xl:grid-cols-[minmax(0,4fr)_minmax(0,4fr)_minmax(0,3fr)]">
+          <FieldSet className="grid gap-x-6 gap-y-5 border-t md:grid-cols-2 xl:grid-cols-[minmax(0,4fr)_minmax(0,4fr)_minmax(0,3fr)]">
             <SectionLegend number={2}>Data pinjaman</SectionLegend>
             <FormField
               control={control}
