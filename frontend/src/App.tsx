@@ -19,7 +19,7 @@ export default function App() {
       <header className="border-b bg-card">
         <div className="mx-auto flex h-14 max-w-6xl items-center px-4 sm:px-6">
           <Link to="/" className="font-bold tracking-tight text-primary">
-            Pengajuan Pinjaman Anggota
+            Bank Nusantara Digital
           </Link>
         </div>
       </header>

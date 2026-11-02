@@ -42,10 +42,10 @@ async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
   await user.type(screen.getByLabelText('Nama lengkap'), '  Budi Santoso ')
   await user.type(screen.getByLabelText('NIK'), '3171 0115 0490 0001')
   fireEvent.change(screen.getByLabelText('Tanggal lahir'), { target: { value: '1990-04-15' } })
-  await user.type(screen.getByLabelText('Nomor HP (opsional)'), '0812-3456-7890')
+  await user.type(screen.getByLabelText('Nomor HP (disarankan)'), '0812-3456-7890')
   await user.selectOptions(screen.getByLabelText('Status perkawinan'), 'KAWIN')
   await user.type(screen.getByLabelText('Nama pasangan'), 'Siti Aminah')
-  await user.selectOptions(screen.getByLabelText('Jenis pinjaman'), 'KTA')
+  await user.selectOptions(screen.getByLabelText('Jenis kredit'), 'KTA')
   await user.type(screen.getByLabelText('Jumlah pinjaman'), '50000000')
   await user.selectOptions(screen.getByLabelText('Tenor'), '12')
 }

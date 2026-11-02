@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router'
 import { DecisionStamp } from '@/components/DecisionStamp'
 import { ResultSkeleton } from '@/components/ResultSkeleton'
+import { UploadPanel } from '@/components/UploadPanel'
 import { Alert, AlertAction, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { ApiError, getApplication } from '@/lib/api'
@@ -15,14 +16,12 @@ const submittedAt = new Intl.DateTimeFormat('id-ID', {
   timeZone: 'Asia/Jakarta',
 })
 
-const FILE_RULES = 'JPG, PNG, atau PDF. Maksimal 20 MB per file dan 5 file per pengajuan.'
-
 function summary(application: Application): string {
-  if (application.decision === 'PASS')
-    return 'Data Anda cocok dengan data anggota. Pengajuan pinjaman dapat dilanjutkan.'
+  if (application.decision === 'PASS') return 'Data Anda cocok dengan data nasabah. Pengajuan kredit dapat dilanjutkan.'
   if (application.decision === 'NOT_PASS')
     return 'Pengajuan belum dapat diproses. Silakan periksa kembali data Anda atau hubungi cabang terdekat.'
-  if (application.status === 'IN_REVIEW') return 'Dokumen Anda sedang ditinjau analis kredit.'
+  if (application.status === 'IN_REVIEW')
+    return 'Dokumen Anda sedang ditinjau analis kredit. Simpan nomor pengajuan di bawah; hasil verifikasi akan disampaikan petugas bank.'
   return 'Data Anda perlu diverifikasi oleh analis kredit. Unggah dokumen pendukung, lalu kirim untuk ditinjau.'
 }
 
@@ -73,28 +72,30 @@ function ApplicationResult({ application }: { application: Application }) {
             {application.credit_score !== null && (
               <Detail label="Skor kredit" value={formatNumber2(application.credit_score)} />
             )}
-            <Detail label="Jenis pinjaman" value={LOAN_LABELS[loan.type]} />
+            <Detail label="Jenis kredit" value={LOAN_LABELS[loan.type]} />
             <Detail label="Jumlah pinjaman" value={`Rp${formatInteger(loan.amount)}`} />
             <Detail label="Tenor" value={`${loan.tenor_months} bulan`} />
           </dl>
         </section>
 
         {decision === 'PASS' && (
-          <details className="rounded-2xl border bg-card shadow-sm">
+          <details className="rounded-2xl border bg-card shadow-sm" open={application.documents.length > 0}>
             <summary className="cursor-pointer p-6 font-semibold sm:px-8">Unggah dokumen (opsional)</summary>
-            <p className="border-t p-6 text-sm text-muted-foreground sm:px-8">{FILE_RULES}</p>
+            <div className="border-t p-6 sm:px-8">
+              <UploadPanel key={application.application_id} application={application} canSubmit={false} />
+            </div>
           </details>
         )}
 
         {decision === 'REFER' && (
           <section
             aria-labelledby="documents-heading"
-            className="space-y-2 rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
+            className="space-y-5 rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
           >
             <h2 id="documents-heading" className="text-lg font-semibold">
               Dokumen pendukung
             </h2>
-            <p className="text-sm text-muted-foreground">{FILE_RULES}</p>
+            <UploadPanel key={application.application_id} application={application} canSubmit />
           </section>
         )}
       </div>

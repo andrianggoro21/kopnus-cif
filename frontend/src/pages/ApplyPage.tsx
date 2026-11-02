@@ -44,7 +44,7 @@ const EMPTY: FormValues = {
   loan_tenor_months: '',
 }
 
-const STEPS = ['Isi data diri dan pinjaman', 'Data diperiksa otomatis', 'Unggah dokumen bila diminta']
+const STEPS = ['Isi data diri dan kredit', 'Data diperiksa otomatis', 'Unggah dokumen bila diminta']
 
 const INPUT = 'h-10'
 const SELECT = 'w-full [&>select]:h-10'
@@ -101,7 +101,7 @@ function FormField({
 
 function SectionLegend({ number, children }: { number: number; children: ReactNode }) {
   return (
-    <FieldLegend className="mb-1 flex items-center gap-3 text-lg font-semibold">
+    <FieldLegend className="mb-5 flex items-center gap-3 text-lg font-semibold">
       <span className="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-sm text-primary-foreground">
         {number}
       </span>
@@ -147,10 +147,10 @@ export default function ApplyPage() {
     <div className="grid gap-6 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:items-start lg:gap-8">
       <aside className="flex flex-col justify-between gap-10 rounded-2xl bg-primary p-6 text-primary-foreground sm:p-8 lg:sticky lg:top-6 lg:min-h-[calc(100dvh-3.5rem-3rem)]">
         <div className="space-y-6">
-          <h1 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl">Ajukan pinjaman</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl">Ajukan kredit</h1>
           <p className="max-w-prose text-primary-foreground/80">
-            Data Anda dicocokkan dengan data anggota koperasi. Hasilnya langsung tampil setelah Anda menekan Periksa
-            data.
+            Data Anda dicocokkan dengan data nasabah Bank Nusantara Digital. Hasilnya langsung tampil setelah Anda
+            menekan Periksa data.
           </p>
           <ol className="space-y-4">
             {STEPS.map((step, index) => (
@@ -212,8 +212,8 @@ export default function ApplyPage() {
             <FormField
               control={control}
               name="phone"
-              label="Nomor HP (opsional)"
-              description="Diawali 08, 628, atau +628."
+              label="Nomor HP (disarankan)"
+              description="Contoh: 0812 3456 7890."
             >
               {(props) => <Input {...props} className={INPUT} type="tel" autoComplete="tel" />}
             </FormField>
@@ -273,17 +273,12 @@ export default function ApplyPage() {
             </div>
           </FieldSet>
 
-          <FieldSet className="grid gap-x-6 gap-y-5 border-t pt-8 md:grid-cols-2 xl:grid-cols-[minmax(0,4fr)_minmax(0,4fr)_minmax(0,3fr)]">
+          <FieldSet className="grid gap-x-6 gap-y-5 border-t md:grid-cols-2 xl:grid-cols-[minmax(0,4fr)_minmax(0,4fr)_minmax(0,3fr)]">
             <SectionLegend number={2}>Data pinjaman</SectionLegend>
-            <FormField
-              control={control}
-              name="loan_type"
-              label="Jenis pinjaman"
-              className="md:col-span-2 xl:col-span-1"
-            >
+            <FormField control={control} name="loan_type" label="Jenis kredit" className="md:col-span-2 xl:col-span-1">
               {(props) => (
                 <NativeSelect {...props} className={SELECT}>
-                  <NativeSelectOption value="">Pilih jenis pinjaman</NativeSelectOption>
+                  <NativeSelectOption value="">Pilih jenis kredit</NativeSelectOption>
                   {LOAN_TYPES.map((type) => (
                     <NativeSelectOption key={type} value={type}>
                       {LOAN_LABELS[type]}

@@ -1,4 +1,5 @@
-import type { Application } from '@/types'
+import type { Application, UploadedDoc } from '@/types'
+import type { SendFn } from './uploadPool'
 import type { CifCheckBody } from './validation'
 
 export class ApiError extends Error {
@@ -80,6 +81,38 @@ export async function submitApplication(id: string): Promise<Application> {
 
 export function applicationHeaders(applicationId: string): Record<string, string> {
   return { 'X-Application-Id': applicationId, 'X-Application-Token': tokenFor(applicationId) }
+}
+
+export function xhrUpload(applicationId: string): SendFn {
+  return (item, onProgress, signal) =>
+    new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', '/api/uploads')
+      for (const [name, value] of Object.entries({ Accept: 'application/json', ...applicationHeaders(applicationId) }))
+        xhr.setRequestHeader(name, value)
+      xhr.upload.onprogress = (event) => onProgress(event.loaded)
+      xhr.onload = () => {
+        let body: { message?: string; errors?: Record<string, string[]> } | null = null
+        try {
+          body = JSON.parse(xhr.responseText)
+        } catch {
+          body = null
+        }
+        if (xhr.status === 201) return resolve(body as unknown as UploadedDoc)
+        const fieldError = body?.errors?.file?.[0] ?? body?.errors?.doc_type?.[0]
+        reject(
+          new ApiError(xhr.status, fieldError ?? body?.message ?? 'Unggahan gagal. Silakan coba lagi.', body?.errors),
+        )
+      }
+      xhr.onerror = () => reject(new ApiError(0, 'Koneksi terputus. Silakan coba lagi.'))
+      xhr.onabort = () => reject(new DOMException('Unggahan dibatalkan.', 'AbortError'))
+      signal.addEventListener('abort', () => xhr.abort(), { once: true })
+
+      const form = new FormData()
+      form.append('file', item.file)
+      form.append('doc_type', item.docType)
+      xhr.send(form)
+    })
 }
 
 export async function fetchUpload(url: string, applicationId: string): Promise<Blob> {
