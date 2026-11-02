@@ -77,6 +77,16 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  upstream-mock:
+    profiles: ["mock"]
+    image: node:26-alpine
+    command: ["node", "/mock/server.mjs"]
+    environment:
+      DATA_DIR: /testdata
+    volumes:
+      - ./mock:/mock:ro
+      - ./testdata:/testdata:ro
+
   backend-test:
     profiles: ["test"]
     build:
@@ -84,6 +94,12 @@ services:
       target: test
     volumes:
       - ./testdata:/var/www/testdata:ro
+
+  frontend-test:
+    profiles: ["test"]
+    build:
+      context: ./frontend
+      target: test
 
 volumes:
   mysql-data:
