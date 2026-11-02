@@ -30,7 +30,7 @@ function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div className="space-y-1">
       <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="text-lg font-semibold">{value}</dd>
+      <dd className="text-lg font-semibold whitespace-nowrap">{value}</dd>
     </div>
   )
 }
@@ -47,44 +47,57 @@ function ApplicationResult({ application }: { application: Application }) {
   const { decision, loan } = application
 
   return (
-    <article className="space-y-8">
-      <div className="space-y-5">
-        <h1 className="sr-only">Hasil pengecekan</h1>
-        <DecisionStamp decision={decision} />
-        <p className="max-w-prose text-lg text-pretty">{summary(application)}</p>
-      </div>
+    <article className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-8">
+      <section className="flex flex-col gap-8 rounded-2xl border bg-card p-6 shadow-sm sm:p-8 lg:sticky lg:top-6">
+        <div className="space-y-6">
+          <h1 className="sr-only">Hasil pengecekan</h1>
+          <DecisionStamp decision={decision} />
+          <p className="max-w-prose text-lg text-pretty">{summary(application)}</p>
+          {decision === 'NOT_PASS' && <NewApplicationLink>Ajukan ulang</NewApplicationLink>}
+        </div>
+        <dl className="grid gap-5 border-t pt-6 sm:grid-cols-2 lg:grid-cols-1">
+          <Detail label="Nomor pengajuan" value={application.application_id} />
+          <Detail label="Diajukan" value={submittedAt.format(new Date(application.created_at))} />
+        </dl>
+      </section>
 
-      <dl className="grid gap-x-8 gap-y-6 border-y py-6 sm:grid-cols-2 lg:grid-cols-3">
-        <Detail label="Nomor pengajuan" value={application.application_id} />
-        <Detail label="Diajukan" value={submittedAt.format(new Date(application.created_at))} />
-        {application.identity_confidence !== null && (
-          <Detail label="Kecocokan identitas" value={`${formatNumber2(application.identity_confidence)}%`} />
-        )}
-        {application.credit_score !== null && (
-          <Detail label="Skor kredit" value={formatNumber2(application.credit_score)} />
-        )}
-        <Detail label="Jenis pinjaman" value={LOAN_LABELS[loan.type]} />
-        <Detail label="Jumlah pinjaman" value={`Rp${formatInteger(loan.amount)}`} />
-        <Detail label="Tenor" value={`${loan.tenor_months} bulan`} />
-      </dl>
-
-      {decision === 'PASS' && (
-        <details className="rounded-xl border bg-card">
-          <summary className="cursor-pointer p-5 font-semibold">Unggah dokumen (opsional)</summary>
-          <p className="border-t p-5 text-sm text-muted-foreground">{FILE_RULES}</p>
-        </details>
-      )}
-
-      {decision === 'REFER' && (
-        <section aria-labelledby="documents-heading" className="space-y-2 rounded-xl border bg-card p-5 sm:p-8">
-          <h2 id="documents-heading" className="text-lg font-semibold">
-            Dokumen pendukung
+      <div className="space-y-6">
+        <section aria-labelledby="details-heading" className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
+          <h2 id="details-heading" className="mb-6 text-lg font-semibold">
+            Rincian pengajuan
           </h2>
-          <p className="text-sm text-muted-foreground">{FILE_RULES}</p>
+          <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            {application.identity_confidence !== null && (
+              <Detail label="Kecocokan identitas" value={`${formatNumber2(application.identity_confidence)}%`} />
+            )}
+            {application.credit_score !== null && (
+              <Detail label="Skor kredit" value={formatNumber2(application.credit_score)} />
+            )}
+            <Detail label="Jenis pinjaman" value={LOAN_LABELS[loan.type]} />
+            <Detail label="Jumlah pinjaman" value={`Rp${formatInteger(loan.amount)}`} />
+            <Detail label="Tenor" value={`${loan.tenor_months} bulan`} />
+          </dl>
         </section>
-      )}
 
-      {decision === 'NOT_PASS' && <NewApplicationLink>Ajukan ulang</NewApplicationLink>}
+        {decision === 'PASS' && (
+          <details className="rounded-2xl border bg-card shadow-sm">
+            <summary className="cursor-pointer p-6 font-semibold sm:px-8">Unggah dokumen (opsional)</summary>
+            <p className="border-t p-6 text-sm text-muted-foreground sm:px-8">{FILE_RULES}</p>
+          </details>
+        )}
+
+        {decision === 'REFER' && (
+          <section
+            aria-labelledby="documents-heading"
+            className="space-y-2 rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
+          >
+            <h2 id="documents-heading" className="text-lg font-semibold">
+              Dokumen pendukung
+            </h2>
+            <p className="text-sm text-muted-foreground">{FILE_RULES}</p>
+          </section>
+        )}
+      </div>
     </article>
   )
 }

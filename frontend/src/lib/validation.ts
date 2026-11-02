@@ -16,7 +16,7 @@ const FILE_TYPES = ['image/jpeg', 'image/png', 'application/pdf']
 
 const charCount = (s: string) => [...s].length
 
-const localToday = () => {
+export const localToday = () => {
   const d = new Date()
   return [d.getFullYear(), d.getMonth() + 1, d.getDate()].map((n) => String(n).padStart(2, '0')).join('-')
 }
