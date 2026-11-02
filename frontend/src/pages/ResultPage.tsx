@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router'
 import { DecisionStamp } from '@/components/DecisionStamp'
 import { ResultSkeleton } from '@/components/ResultSkeleton'
@@ -44,12 +45,17 @@ function NewApplicationLink({ children }: { children: string }) {
 
 function ApplicationResult({ application }: { application: Application }) {
   const { decision, loan } = application
+  const heading = useRef<HTMLHeadingElement>(null)
+
+  useEffect(() => heading.current?.focus(), [])
 
   return (
     <article className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-8">
       <section className="flex flex-col gap-8 rounded-2xl border bg-card p-6 shadow-sm sm:p-8 lg:sticky lg:top-6">
         <div className="space-y-6">
-          <h1 className="sr-only">Hasil pengecekan</h1>
+          <h1 ref={heading} tabIndex={-1} className="sr-only">
+            Hasil pengecekan
+          </h1>
           <DecisionStamp decision={decision} />
           <p className="max-w-prose text-lg text-pretty">{summary(application)}</p>
           {decision === 'NOT_PASS' && <NewApplicationLink>Ajukan ulang</NewApplicationLink>}

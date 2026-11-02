@@ -66,6 +66,16 @@ export function UploadPanel({
   const progress = totalProgress(items)
 
   useEffect(() => {
+    const known = new Set(application.documents.map((doc) => doc.upload_id))
+    const fresh = items.flatMap((item) => (item.result && !known.has(item.result.upload_id) ? [item.result] : []))
+    if (!fresh.length) return
+    queryClient.setQueryData<Application>(
+      ['application', applicationId],
+      (cached) => cached && { ...cached, documents: [...cached.documents, ...fresh] },
+    )
+  }, [items, application.documents, applicationId, queryClient])
+
+  useEffect(() => {
     if (!busy) return
     const warn = (event: BeforeUnloadEvent) => event.preventDefault()
     window.addEventListener('beforeunload', warn)

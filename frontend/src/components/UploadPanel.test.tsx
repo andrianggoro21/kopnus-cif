@@ -123,6 +123,30 @@ describe('UploadPanel', () => {
     )
   })
 
+  it('adds finished uploads to the cached application so they survive navigating back', async () => {
+    const { send, calls } = controlledSend()
+    const app = application()
+    const { user, queryClient } = renderPanel(app, send)
+    queryClient.setQueryData(['application', app.application_id], app)
+
+    await user.upload(screen.getByLabelText('Pilih file dokumen'), [file('ktp.jpg')])
+    await user.click(screen.getByRole('button', { name: 'Unggah 1 file' }))
+    await act(async () =>
+      calls[0].resolve({
+        upload_id: 9,
+        file_name: 'ktp.jpg',
+        doc_type: 'KTP',
+        status: 'COMPLETED',
+        url: '/api/uploads/9',
+      }),
+    )
+
+    expect(
+      queryClient.getQueryData<Application>(['application', app.application_id])?.documents.map((d) => d.upload_id),
+    ).toEqual([9])
+    expect(screen.getAllByText('ktp.jpg')).toHaveLength(1)
+  })
+
   it('lists documents from the server and locks the panel while in review', () => {
     const { send } = controlledSend()
     renderPanel(
