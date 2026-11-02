@@ -49,7 +49,7 @@ class CifCheckRequest extends FormRequest
             'marital_status' => 'Status perkawinan',
             'spouse_name' => 'Nama pasangan',
             'spouse_forgotten' => 'Lupa nama pasangan',
-            'loan_type' => 'Jenis pinjaman',
+            'loan_type' => 'Jenis kredit',
             'loan_amount' => 'Jumlah pinjaman',
             'loan_tenor_months' => 'Tenor',
         ];

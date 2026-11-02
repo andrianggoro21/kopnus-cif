@@ -68,7 +68,7 @@ export const applicantSchema = z
       .refine((v) => !v || NAME_PATTERN.test(v), patternMessage('Nama pasangan'))
       .transform((v) => v || null),
     spouse_forgotten: z.boolean(),
-    loan_type: z.string().pipe(z.enum(LOAN_TYPES, { error: 'Jenis pinjaman wajib diisi.' })),
+    loan_type: z.string().pipe(z.enum(LOAN_TYPES, { error: 'Jenis kredit wajib diisi.' })),
     loan_amount: z
       .string()
       .min(1, 'Jumlah pinjaman wajib diisi.')

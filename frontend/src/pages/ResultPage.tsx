@@ -17,11 +17,11 @@ const submittedAt = new Intl.DateTimeFormat('id-ID', {
 })
 
 function summary(application: Application): string {
-  if (application.decision === 'PASS')
-    return 'Data Anda cocok dengan data anggota. Pengajuan pinjaman dapat dilanjutkan.'
+  if (application.decision === 'PASS') return 'Data Anda cocok dengan data nasabah. Pengajuan kredit dapat dilanjutkan.'
   if (application.decision === 'NOT_PASS')
     return 'Pengajuan belum dapat diproses. Silakan periksa kembali data Anda atau hubungi cabang terdekat.'
-  if (application.status === 'IN_REVIEW') return 'Dokumen Anda sedang ditinjau analis kredit.'
+  if (application.status === 'IN_REVIEW')
+    return 'Dokumen Anda sedang ditinjau analis kredit. Simpan nomor pengajuan di bawah; hasil verifikasi akan disampaikan petugas bank.'
   return 'Data Anda perlu diverifikasi oleh analis kredit. Unggah dokumen pendukung, lalu kirim untuk ditinjau.'
 }
 
@@ -72,7 +72,7 @@ function ApplicationResult({ application }: { application: Application }) {
             {application.credit_score !== null && (
               <Detail label="Skor kredit" value={formatNumber2(application.credit_score)} />
             )}
-            <Detail label="Jenis pinjaman" value={LOAN_LABELS[loan.type]} />
+            <Detail label="Jenis kredit" value={LOAN_LABELS[loan.type]} />
             <Detail label="Jumlah pinjaman" value={`Rp${formatInteger(loan.amount)}`} />
             <Detail label="Tenor" value={`${loan.tenor_months} bulan`} />
           </dl>
